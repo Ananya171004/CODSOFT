@@ -1,0 +1,58 @@
+mport java.util.Random;
+import java.util.Scanner;
+
+public class GuessingGame {
+
+    public static void main(String[] args) {
+        // Game settings
+        int minNumber = 1;
+        int maxNumber = 100;
+        int maxAttempts = 5;
+        boolean playAgain = true;
+
+        while (playAgain) {
+            // Generate random number
+            Random random = new Random();
+            int numberToGuess = random.nextInt(maxNumber - minNumber + 1) + minNumber;
+
+            // Start game loop
+            int attempts = 0;
+            boolean guessedCorrectly = false;
+            while (!guessedCorrectly && attempts < maxAttempts) {
+                System.out.printf("Guess the number between %d and %d (attempts left: %d): ", minNumber, maxNumber, maxAttempts - attempts);
+                int guess = new Scanner(System.in).nextInt();
+
+                // Check for valid guess
+                if (guess < minNumber || guess > maxNumber) {
+                    System.out.println("Invalid guess. Please enter a number within the specified range.");
+                    continue;
+                }
+
+                attempts++;
+
+                // Check if the guess is correct
+                if (guess == numberToGuess) {
+                    guessedCorrectly = true;
+                    System.out.println("Congratulations! You guessed the number in " + attempts + " tries.");
+                } else if (guess < numberToGuess) {
+                    System.out.println("Your guess is too low. Try again.");
+                } else {
+                    System.out.println("Your guess is too high. Try again.");
+                }
+            }
+
+            // Game over message and score
+            if (!guessedCorrectly) {
+                System.out.println("Sorry, you ran out of guesses. The number was: " + numberToGuess);
+            } else {
+                System.out.printf("Your score: %d attempts\n", attempts);
+            }
+
+            // Ask to play again
+            System.out.print("Play again? (y/n): ");
+            playAgain = new Scanner(System.in).nextLine().toLowerCase().startsWith("y");
+        }
+
+        System.out.println("Thanks for playing!");
+    }
+}
